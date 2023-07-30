@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Live Cricket Score</title>
+  </head>
+  <body>
+    <h1>Live Cricket Score</h1>
+    <div id="score-container">
+      <p>Waiting for live updates...</p>
+    </div>
+    <script>
+      const scoreContainer = document.getElementById("score-container");
+
+      const socket = new WebSocket("ws://localhost:8080");
+
+      socket.onmessage = (event) => {
+        const scores = JSON.parse(event.data);
+        const scoreHTML = `<p>Team 1: ${scores.team1} - Team 2: ${scores.team2}</p>`;
+        scoreContainer.innerHTML = scoreHTML;
+      };
+
+      socket.onerror = (error) => {
+        console.error("WebSocket error:", error);
+      };
+    </script>
+  </body>
+</html>
